@@ -41,11 +41,11 @@ export function SettingsView() {
                     </div>
                   </div>
                 </div>
-                <div><Label>Nombre</Label><Input defaultValue="Colegio San Martín" className="mt-1.5" /></div>
+                <div><Label>Nombre</Label><Input defaultValue="Colegio Tupac Amaru" className="mt-1.5" /></div>
                 <div><Label>Código modular</Label><Input defaultValue="1234567" className="mt-1.5" /></div>
                 <div><Label>RUC</Label><Input defaultValue="20123456789" className="mt-1.5" /></div>
                 <div><Label>Director</Label><Input defaultValue="Laura Vega" className="mt-1.5" /></div>
-                <div className="sm:col-span-2"><Label>Dirección</Label><Input defaultValue="Av. Educación 1234, Lima, Perú" className="mt-1.5" /></div>
+                <div className="sm:col-span-2"><Label>Dirección</Label><Input defaultValue="Pariamarca, Pasco, Perú" className="mt-1.5" /></div>
                 <div className="sm:col-span-2"><Label>Misión</Label><Textarea rows={3} defaultValue="Brindar educación integral de excelencia..." className="mt-1.5" /></div>
               </div>
               <div className="flex justify-end gap-2 mt-6">

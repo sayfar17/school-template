@@ -54,13 +54,13 @@ const roleColor: Record<string, string> = {
 };
 
 const initialUsers = [
-  { id: 1, name: "María Rodríguez", email: "maria.r@edumanage.edu.pe", dni: "45123456", role: "Administrador", active: true, phone: "+51 987 654 321" },
-  { id: 2, name: "Carlos Mendoza", email: "c.mendoza@edumanage.edu.pe", dni: "45987612", role: "Docente", active: true, phone: "+51 987 555 111" },
-  { id: 3, name: "Laura Vega", email: "l.vega@edumanage.edu.pe", dni: "44321987", role: "Director", active: true, phone: "+51 987 222 333" },
-  { id: 4, name: "Pedro Soto", email: "p.soto@edumanage.edu.pe", dni: "46555666", role: "Docente", active: false, phone: "+51 987 444 555" },
-  { id: 5, name: "Ana Pérez", email: "a.perez@edumanage.edu.pe", dni: "47888999", role: "Auxiliar", active: true, phone: "+51 987 666 777" },
+  { id: 1, name: "María Rodríguez", email: "maria.r@edugestion360.edu.pe", dni: "45123456", role: "Administrador", active: true, phone: "+51 987 654 321" },
+  { id: 2, name: "Carlos Mendoza", email: "c.mendoza@edugestion360.edu.pe", dni: "45987612", role: "Docente", active: true, phone: "+51 987 555 111" },
+  { id: 3, name: "Laura Vega", email: "l.vega@edugestion360.edu.pe", dni: "44321987", role: "Director", active: true, phone: "+51 987 222 333" },
+  { id: 4, name: "Pedro Soto", email: "p.soto@edugestion360.edu.pe", dni: "46555666", role: "Docente", active: false, phone: "+51 987 444 555" },
+  { id: 5, name: "Ana Pérez", email: "a.perez@edugestion360.edu.pe", dni: "47888999", role: "Auxiliar", active: true, phone: "+51 987 666 777" },
   { id: 6, name: "Jorge Torres", email: "j.torres@gmail.com", dni: "48111222", role: "Padre", active: true, phone: "+51 987 888 999" },
-  { id: 7, name: "Sofía Quispe", email: "s.quispe@edumanage.edu.pe", dni: "78123456", role: "Alumno", active: true, phone: "+51 987 100 200" },
+  { id: 7, name: "Sofía Quispe", email: "s.quispe@edugestion360.edu.pe", dni: "78123456", role: "Alumno", active: true, phone: "+51 987 100 200" },
   { id: 8, name: "Diego Ramírez", email: "d.ramirez@gmail.com", dni: "48333444", role: "Padre", active: true, phone: "+51 987 300 400" },
 ];
 
@@ -218,7 +218,7 @@ export function UsersView() {
             <div><Label>Apellidos</Label><Input placeholder="Pérez García" className="mt-1.5" /></div>
             <div><Label>DNI</Label><Input placeholder="12345678" className="mt-1.5" /></div>
             <div><Label>Fecha de nacimiento</Label><Input type="date" className="mt-1.5" /></div>
-            <div><Label>Correo</Label><Input type="email" placeholder="usuario@edumanage.edu.pe" className="mt-1.5" /></div>
+            <div><Label>Correo</Label><Input type="email" placeholder="usuario@edugestion360.edu.pe" className="mt-1.5" /></div>
             <div><Label>Teléfono</Label><Input placeholder="+51 ..." className="mt-1.5" /></div>
             <div className="sm:col-span-2"><Label>Dirección</Label><Input placeholder="Av. Lima 123" className="mt-1.5" /></div>
             <div>

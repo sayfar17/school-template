@@ -52,8 +52,6 @@ const performanceData = [
 ];
 
 const enrollment = [
-  { name: "Inicial", value: 220, color: "#3b82f6" },
-  { name: "Primaria", value: 540, color: "#6366f1" },
   { name: "Secundaria", value: 490, color: "#0ea5e9" },
 ];
 

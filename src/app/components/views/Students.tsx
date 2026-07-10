@@ -10,11 +10,11 @@ import { Progress } from "../ui/progress";
 
 const students = [
   { id: "ALU-2026-001", name: "Sofía Quispe Mamani", grade: "5° A · Secundaria", avg: 17.4, attendance: 96, status: "Regular", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80" },
-  { id: "ALU-2026-002", name: "Diego Ramírez Soto", grade: "3° B · Secundaria", avg: 15.8, attendance: 92, status: "Regular", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80" },
-  { id: "ALU-2026-003", name: "Valentina Cruz Pérez", grade: "6° A · Primaria", avg: 18.1, attendance: 98, status: "Destacado", img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80" },
-  { id: "ALU-2026-004", name: "Mateo Torres Vega", grade: "4° C · Secundaria", avg: 13.2, attendance: 84, status: "Riesgo", img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&q=80" },
-  { id: "ALU-2026-005", name: "Camila Flores Rojas", grade: "2° A · Primaria", avg: 17.9, attendance: 97, status: "Regular", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&q=80" },
-  { id: "ALU-2026-006", name: "Lucas Herrera Díaz", grade: "1° B · Secundaria", avg: 16.5, attendance: 94, status: "Regular", img: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=200&q=80" },
+  { id: "ALU-2026-002", name: "Diego Ramírez Soto", grade: "3° A · Secundaria", avg: 15.8, attendance: 92, status: "Regular", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80" },
+  { id: "ALU-2026-003", name: "Valentina Cruz Pérez", grade: "5° A · Secundaria", avg: 18.1, attendance: 98, status: "Destacado", img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80" },
+  { id: "ALU-2026-004", name: "Mateo Torres Vega", grade: "4° A · Secundaria", avg: 13.2, attendance: 84, status: "Riesgo", img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&q=80" },
+  { id: "ALU-2026-005", name: "Camila Flores Rojas", grade: "2° A · Secundaria", avg: 17.9, attendance: 97, status: "Regular", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&q=80" },
+  { id: "ALU-2026-006", name: "Lucas Herrera Díaz", grade: "1° A · Secundaria", avg: 16.5, attendance: 94, status: "Regular", img: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=200&q=80" },
 ];
 
 const statusColor: Record<string, string> = {
@@ -122,10 +122,10 @@ export function Students() {
                 <TabsContent value="info" className="pt-6">
                   <div className="grid sm:grid-cols-2 gap-4">
                     {[
-                      { i: Mail, l: "Email", v: "s.quispe@edumanage.edu.pe" },
+                      { i: Mail, l: "Email", v: "s.quispe@edugestion360.edu.pe" },
                       { i: Phone, l: "Teléfono", v: "+51 987 100 200" },
                       { i: Calendar, l: "Fecha de nacimiento", v: "12 Ago 2010" },
-                      { i: MapPin, l: "Dirección", v: "Av. Lima 456, San Borja" },
+                      { i: MapPin, l: "Dirección", v: "Pariamarca" },
                     ].map((d) => (
                       <div key={d.l} className="flex items-start gap-3">
                         <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center">

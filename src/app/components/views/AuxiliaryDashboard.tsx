@@ -137,8 +137,6 @@ export function AuxiliaryDashboard({ onNavigate }: { onNavigate: (k: any) => voi
           </div>
           <div className="grid sm:grid-cols-3 gap-4">
             {[
-              { l: "Inicial", p: 215, t: 220, pct: 97.7 },
-              { l: "Primaria", p: 512, t: 540, pct: 94.8 },
               { l: "Secundaria", p: 455, t: 490, pct: 92.9 },
             ].map((n) => (
               <div key={n.l} className="rounded-lg border border-slate-200 p-4">

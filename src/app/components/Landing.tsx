@@ -33,11 +33,6 @@ interface LandingProps {
 
 const services = [
   {
-    icon: BookOpen,
-    title: "Educación Primaria",
-    desc: "Formación integral para niños de 6 a 11 años con metodología activa.",
-  },
-  {
     icon: GraduationCap,
     title: "Educación Secundaria",
     desc: "Preparación académica sólida orientada a la universidad.",
@@ -46,11 +41,6 @@ const services = [
     icon: Trophy,
     title: "Actividades Extracurriculares",
     desc: "Deportes, arte, música y robótica para desarrollar talentos.",
-  },
-  {
-    icon: Library,
-    title: "Biblioteca",
-    desc: "Más de 10,000 títulos físicos y digitales disponibles.",
   },
   {
     icon: Monitor,
@@ -67,23 +57,23 @@ const services = [
 const news = [
   {
     img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80",
-    date: "15 May 2026",
-    cat: "Académico",
-    title: "Estudiantes ganan Olimpiada Nacional de Matemática",
-    desc: "Nuestro equipo obtuvo el primer puesto en la fase nacional representando a la región.",
+    date: "06 Jun 2026",
+    cat: "Comunicado",
+    title: "Feliz día del maestro",
+    desc: "Tu vocación transforma vidas y construye el futuro. ¡Feliz día a quienes guían nuestros pasos!",
   },
   {
     img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80",
-    date: "08 May 2026",
+    date: "27 Abr 2026",
     cat: "Eventos",
-    title: "Feria de Ciencias 2026: Innovación Estudiantil",
-    desc: "Más de 80 proyectos presentados por alumnos de primaria y secundaria.",
+    title: "Juegos Escolares Deportivos y Paradeportivos 2026",
+    desc: "Así se vivió los  Juegos Escolares Deportivos y Paradeportivos 2026  en la I.E. Tupac Amaru- Etapa Institucional!",
   },
   {
     img: "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=800&q=80",
-    date: "02 May 2026",
+    date: "01 Ene 2026",
     cat: "Comunicado",
-    title: "Inicio del proceso de admisión 2027",
+    title: "Inicio del proceso de admisión 2026",
     desc: "Conoce los requisitos y fechas importantes del próximo año académico.",
   },
 ];
@@ -112,9 +102,9 @@ export function Landing({ onLogin }: LandingProps) {
               <GraduationCap className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col leading-tight">
-              <span className="text-blue-700">EduManage</span>
+              <span className="text-blue-700">EduGestión 360</span>
               <span className="text-xs text-slate-500">
-                Colegio San Martín
+                Colegio Tupac Amaru
               </span>
             </div>
           </div>
@@ -224,7 +214,7 @@ export function Landing({ onLogin }: LandingProps) {
             <p className="text-lg text-slate-600 mb-8 max-w-xl">
               Una plataforma educativa integral que conecta
               estudiantes, docentes y familias en un solo lugar.
-              Gestiona, aprende y crece con EduManage.
+              Gestiona, aprende y crece con EduGestión 360.
             </p>
             <div className="flex flex-wrap gap-3">
               <Button
@@ -245,9 +235,9 @@ export function Landing({ onLogin }: LandingProps) {
             </div>
             <div className="mt-10 grid grid-cols-3 gap-6 max-w-md">
               {[
-                { n: "1,250+", l: "Estudiantes" },
-                { n: "85", l: "Docentes" },
-                { n: "30", l: "Años" },
+                { n: "50+", l: "Estudiantes" },
+                { n: "10", l: "Docentes" },
+                { n: "31", l: "Años" },
               ].map((s) => (
                 <div key={s.l}>
                   <div className="text-2xl text-blue-700">
@@ -272,12 +262,7 @@ export function Landing({ onLogin }: LandingProps) {
                 <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
                   <Trophy className="w-5 h-5 text-emerald-600" />
                 </div>
-                <div>
-                  <div className="text-sm">Excelencia 2025</div>
-                  <div className="text-xs text-slate-500">
-                    Certificación MINEDU
-                  </div>
-                </div>
+                
               </CardContent>
             </Card>
           </div>
@@ -297,7 +282,7 @@ export function Landing({ onLogin }: LandingProps) {
             Tres décadas formando a las nuevas generaciones
           </h2>
           <p className="text-slate-600">
-            Desde 1995, ofrecemos una educación de calidad
+            Desde 1994, ofrecemos una educación de calidad
             basada en valores, innovación y compromiso con la
             comunidad.
           </p>
@@ -306,7 +291,7 @@ export function Landing({ onLogin }: LandingProps) {
           {[
             {
               t: "Nuestra Historia",
-              d: "Fundado en 1995, hemos graduado a más de 8,000 estudiantes que hoy son profesionales destacados.",
+              d: "Fundado en 1994, hemos graduado a estudiantes que hoy son profesionales destacados.",
               c: "bg-blue-50 text-blue-700",
             },
             {
@@ -501,17 +486,17 @@ export function Landing({ onLogin }: LandingProps) {
                 {
                   i: MapPin,
                   t: "Dirección",
-                  v: "Av. Educación 1234, Lima, Perú",
+                  v: "Pariamarca, Pasco, Perú",
                 },
                 {
                   i: Phone,
                   t: "Teléfono",
-                  v: "+51 1 234 5678",
+                  v: "+51 ",
                 },
                 {
                   i: Mail,
                   t: "Email",
-                  v: "informes@edumanage.edu.pe",
+                  v: "tupacamaru@hotmail.com",
                 },
               ].map((c) => (
                 <div
@@ -611,7 +596,7 @@ export function Landing({ onLogin }: LandingProps) {
               <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center">
                 <GraduationCap className="w-5 h-5 text-white" />
               </div>
-              <span className="text-white">EduManage</span>
+              <span className="text-white">EduGestión360</span>
             </div>
             <p className="text-sm text-slate-400">
               Plataforma educativa integral para colegios
@@ -644,7 +629,7 @@ export function Landing({ onLogin }: LandingProps) {
             {
               t: "Académico",
               l: [
-                "Primaria",
+                "Secundaria",
                 "Secundaria",
                 "Admisión",
                 "Calendario",
@@ -679,7 +664,7 @@ export function Landing({ onLogin }: LandingProps) {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-slate-800 text-sm text-slate-500 flex flex-col sm:flex-row justify-between gap-2">
           <span>
-            © 2026 EduManage · Colegio San Martín. Todos los
+            © 2026 EduGestión 360 · Colegio Tupac Amaru. Todos los
             derechos reservados.
           </span>
           <span>Hecho con ♥ para la educación</span>

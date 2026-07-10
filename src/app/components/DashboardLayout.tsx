@@ -182,7 +182,7 @@ export function DashboardLayout({ role, onLogout, onSwitchRole }: DashboardLayou
             </div>
             {!collapsed && (
               <div className="leading-tight">
-                <div className="text-blue-700">EduManage</div>
+                <div className="text-blue-700">EduGestión 360</div>
                 <div className="text-xs text-slate-500">Admin Panel</div>
               </div>
             )}
@@ -364,7 +364,7 @@ export function DashboardLayout({ role, onLogout, onSwitchRole }: DashboardLayou
           <div className="px-4 sm:px-6 pb-4 border-b border-slate-100">
             <div className="flex items-center gap-2 text-xs text-slate-500 mb-1">
               <Home className="w-3 h-3" />
-              <span>EduManage</span>
+              <span>EduGestión 360</span>
               <span>/</span>
               <span className="text-slate-700">{currentMeta.title}</span>
             </div>

@@ -63,7 +63,7 @@ export function Teachers() {
                 </div>
               </div>
               <div className="space-y-2 text-xs text-slate-500">
-                <div className="flex items-center gap-2"><Mail className="w-3 h-3" /> {t.name.toLowerCase().replace(/ /g, ".")}@edumanage.edu.pe</div>
+                <div className="flex items-center gap-2"><Mail className="w-3 h-3" /> {t.name.toLowerCase().replace(/ /g, ".")}@edugestion360.edu.pe</div>
                 <div className="flex items-center gap-2"><Phone className="w-3 h-3" /> +51 987 ··· ···</div>
               </div>
               <div className="mt-4 pt-4 border-t border-slate-100">

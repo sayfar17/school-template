@@ -11,7 +11,7 @@ const courses = [
   { name: "Ciencia y Tecnología", level: "Secundaria", teacher: "Pedro Soto", students: 145, hours: 6, color: "bg-violet-500" },
   { name: "Inglés", level: "Todos", teacher: "Ana Pérez", students: 320, hours: 4, color: "bg-amber-500" },
   { name: "Historia y Geografía", level: "Secundaria", teacher: "Jorge Torres", students: 140, hours: 5, color: "bg-rose-500" },
-  { name: "Arte y Música", level: "Primaria", teacher: "Mónica Salas", students: 180, hours: 3, color: "bg-indigo-500" },
+  { name: "Arte y Música", level: "Secundaria", teacher: "Mónica Salas", students: 180, hours: 3, color: "bg-indigo-500" },
   { name: "Educación Física", level: "Todos", teacher: "Luis Aranda", students: 250, hours: 4, color: "bg-cyan-500" },
   { name: "Computación", level: "Secundaria", teacher: "Karla Núñez", students: 110, hours: 3, color: "bg-pink-500" },
 ];

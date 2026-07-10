@@ -4,9 +4,7 @@ import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 
 const grades = [
-  { level: "Inicial", sections: ["3 años", "4 años", "5 años"], students: 220 },
-  { level: "Primaria", sections: ["1°", "2°", "3°", "4°", "5°", "6°"], students: 540 },
-  { level: "Secundaria", sections: ["1°", "2°", "3°", "4°", "5°"], students: 490 },
+  { level: "Secundaria", sections: ["1°", "2°", "3°", "4°", "5°"], students: 50 },
 ];
 
 export function Grades() {
@@ -33,12 +31,12 @@ export function Grades() {
                 {g.sections.map((s) => (
                   <div key={s} className="rounded-lg border border-slate-200 p-4 hover:border-blue-300 hover:shadow-sm transition">
                     <div className="text-lg">{s}</div>
-                    <div className="text-xs text-slate-500 mt-1">Secciones A · B · C</div>
+                    <div className="text-xs text-slate-500 mt-1">Secciones A</div>
                     <div className="mt-3 flex -space-x-2">
                       {Array.from({ length: 4 }).map((_, i) => (
                         <div key={i} className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 ring-2 ring-white" />
                       ))}
-                      <div className="w-6 h-6 rounded-full bg-slate-100 text-[10px] flex items-center justify-center ring-2 ring-white text-slate-600">+24</div>
+                      <div className="w-6 h-6 rounded-full bg-slate-100 text-[10px] flex items-center justify-center ring-2 ring-white text-slate-600">+10</div>
                     </div>
                   </div>
                 ))}

@@ -60,8 +60,6 @@ export function Attendance() {
               <Select defaultValue="sec">
                 <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ini">Inicial</SelectItem>
-                  <SelectItem value="pri">Primaria</SelectItem>
                   <SelectItem value="sec">Secundaria</SelectItem>
                 </SelectContent>
               </Select>
@@ -71,9 +69,11 @@ export function Attendance() {
               <Select defaultValue="5a">
                 <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="5a">5° A</SelectItem>
-                  <SelectItem value="5b">5° B</SelectItem>
+                  <SelectItem value="4a">1° A</SelectItem>
+                  <SelectItem value="4a">2° A</SelectItem>
+                  <SelectItem value="4a">3° A</SelectItem>
                   <SelectItem value="4a">4° A</SelectItem>
+                  <SelectItem value="5a">5° A</SelectItem>
                 </SelectContent>
               </Select>
             </div>

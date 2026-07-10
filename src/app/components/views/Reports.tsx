@@ -27,8 +27,6 @@ const attendance = [
 ];
 
 const academic = [
-  { l: "Inicial", v: 17.8 },
-  { l: "Primaria", v: 16.5 },
   { l: "Secundaria", v: 15.9 },
 ];
 

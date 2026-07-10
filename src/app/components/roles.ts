@@ -88,10 +88,10 @@ export const permissions: Record<Role, ViewKey[]> = {
 };
 
 export const roleUser: Record<Role, { name: string; email: string }> = {
-  Administrador: { name: "María Rodríguez", email: "admin@edumanage.edu.pe" },
-  Director: { name: "Laura Vega", email: "director@edumanage.edu.pe" },
-  Docente: { name: "Carlos Mendoza", email: "docente@edumanage.edu.pe" },
+  Administrador: { name: "María Rodríguez", email: "admin@edugestion360.edu.pe" },
+  Director: { name: "Laura Vega", email: "director@edugestion360.edu.pe" },
+  Docente: { name: "Carlos Mendoza", email: "docente@edugestion360.edu.pe" },
   Padre: { name: "Manuel Quispe", email: "padre@gmail.com" },
-  Alumno: { name: "Sofía Quispe", email: "alumna@edumanage.edu.pe" },
-  Auxiliar: { name: "Ana Pérez", email: "auxiliar@edumanage.edu.pe" },
+  Alumno: { name: "Sofía Quispe", email: "alumna@edugestion360.edu.pe" },
+  Auxiliar: { name: "Ana Pérez", email: "auxiliar@edugestion360.edu.pe" },
 };

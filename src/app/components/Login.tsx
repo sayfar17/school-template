@@ -61,7 +61,7 @@ export function Login({ onLogin, onForgot, onBack }: LoginProps) {
             <GraduationCap className="w-6 h-6" />
           </div>
           <div>
-            <div>EduManage</div>
+            <div>EduGestión 360</div>
             <div className="text-xs text-blue-100/80">Sistema Académico Integral</div>
           </div>
         </div>
@@ -106,7 +106,7 @@ export function Login({ onLogin, onForgot, onBack }: LoginProps) {
               <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center">
                 <GraduationCap className="w-6 h-6 text-white" />
               </div>
-              <span>EduManage</span>
+              <span>EduGestión 360</span>
             </div>
 
             <h1 className="text-3xl mb-2">Bienvenido de nuevo</h1>
@@ -200,13 +200,13 @@ export function Login({ onLogin, onForgot, onBack }: LoginProps) {
               </Button>
 
               <div className="text-center text-xs text-slate-500">
-                Demo · El selector permite previsualizar la interfaz de cada rol.
+                El selector permite previsualizar la interfaz de cada rol.
               </div>
             </form>
           </div>
         </div>
 
-        <div className="text-center text-xs text-slate-400 mt-6">© 2026 EduManage · v3.1.0</div>
+        <div className="text-center text-xs text-slate-400 mt-6">© 2026 EduGestión 360 · v1.0</div>
       </div>
     </div>
   );

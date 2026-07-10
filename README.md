@@ -1,5 +1,5 @@
 
-  # EduManage UI/UX Design
+  # EduGestión360 UI/UX Design
 
   ## Running the code
 

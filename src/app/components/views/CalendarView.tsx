@@ -26,7 +26,7 @@ const events: Record<number, { t: string; c: Cat }[]> = {
   6: [{ t: "Feria de Ciencias", c: "act" }],
   9: [{ t: "Examen bimestral", c: "exam" }],
   12: [{ t: "Aniversario", c: "evt" }],
-  15: [{ t: "Reunión padres 5°", c: "meet" }, { t: "Salida primaria", c: "act" }],
+  15: [{ t: "Reunión padres 5°", c: "meet" }, { t: "Salida Secundaria", c: "act" }],
   20: [{ t: "Día del logro", c: "evt" }],
   24: [{ t: "Examen ciencias", c: "exam" }],
   28: [{ t: "Reunión docentes", c: "meet" }],
