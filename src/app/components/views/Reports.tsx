@@ -1,4 +1,5 @@
-import { Download, FileText, TrendingUp, Users, GraduationCap, CalendarCheck } from "lucide-react";
+import { useState } from "react";
+import { Download, FileText, TrendingUp, Users, GraduationCap, CalendarCheck, Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
@@ -17,6 +18,8 @@ import {
   CartesianGrid,
   Legend,
 } from "recharts";
+import { toast } from "sonner";
+import { useMockStore } from "./mockStore";
 
 const attendance = [
   { m: "Ene", v: 95 },
@@ -30,22 +33,54 @@ const academic = [
   { l: "Secundaria", v: 15.9 },
 ];
 
-const pie = [
-  { name: "AD (18-20)", value: 32, c: "#10b981" },
-  { name: "A (14-17)", value: 48, c: "#3b82f6" },
-  { name: "B (11-13)", value: 15, c: "#f59e0b" },
-  { name: "C (0-10)", value: 5, c: "#ef4444" },
-];
-
 export function Reports() {
+  const { students, teachers } = useMockStore();
+  const [downloadingKey, setDownloadingKey] = useState<string | null>(null);
+
+  const averageGrade = students.length
+    ? (students.reduce((acc, s) => acc + s.avg, 0) / students.length).toFixed(1)
+    : "0.0";
+  const riskCount = students.filter(s => s.status === "Riesgo").length;
+  const approvedPercentage = students.length
+    ? Math.round((students.filter(s => s.avg >= 11).length / students.length) * 100)
+    : 0;
+
+  const pie = [
+    { name: "AD (18-20)", value: students.filter(s => s.avg >= 17).length, c: "#10b981" },
+    { name: "A (14-16.9)", value: students.filter(s => s.avg >= 14 && s.avg < 17).length, c: "#3b82f6" },
+    { name: "B (11-13.9)", value: students.filter(s => s.avg >= 11 && s.avg < 14).length, c: "#f59e0b" },
+    { name: "C (0-10.9)", value: students.filter(s => s.avg < 11).length, c: "#ef4444" },
+  ].filter(p => p.value > 0);
+
+  // Fallback to static distribution if no students in store
+  const pieData = pie.length ? pie : [
+    { name: "AD (18-20)", value: 32, c: "#10b981" },
+    { name: "A (14-17)", value: 48, c: "#3b82f6" },
+    { name: "B (11-13)", value: 15, c: "#f59e0b" },
+    { name: "C (0-10)", value: 5, c: "#ef4444" },
+  ];
+
+  const handleDownload = (reportName: string, format: string) => {
+    const key = `${reportName}_${format}`;
+    setDownloadingKey(key);
+    toast.promise(
+      new Promise((resolve) => setTimeout(resolve, 1200)),
+      {
+        loading: `Generando ${reportName} (${format})...`,
+        success: `${reportName}.${format.toLowerCase()} generado y descargado`,
+        error: "Error al exportar reporte",
+      }
+    ).finally(() => setDownloadingKey(null));
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { l: "Asistencia anual", v: "94.6%", i: CalendarCheck, c: "bg-emerald-100 text-emerald-600" },
-          { l: "Promedio general", v: "16.4", i: TrendingUp, c: "bg-blue-100 text-blue-600" },
-          { l: "Aprobados", v: "95%", i: GraduationCap, c: "bg-indigo-100 text-indigo-600" },
-          { l: "Retención", v: "98.2%", i: Users, c: "bg-amber-100 text-amber-600" },
+          { l: "Promedio general", v: averageGrade, i: TrendingUp, c: "bg-blue-100 text-blue-600" },
+          { l: "Aprobados", v: `${approvedPercentage}%`, i: GraduationCap, c: "bg-indigo-100 text-indigo-600" },
+          { l: "Alumnos en riesgo", v: riskCount.toString(), i: Users, c: "bg-amber-100 text-amber-600" },
         ].map((s) => {
           const I = s.i;
           return (
@@ -55,7 +90,7 @@ export function Reports() {
                   <I className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-2xl">{s.v}</div>
+                  <div className="text-2xl font-bold">{s.v}</div>
                   <div className="text-sm text-slate-500">{s.l}</div>
                 </div>
               </CardContent>
@@ -72,7 +107,18 @@ export function Reports() {
                 <h3>Tendencia de asistencia</h3>
                 <p className="text-sm text-slate-500">Promedio mensual 2026</p>
               </div>
-              <Button variant="outline"><Download className="w-4 h-4 mr-2" />PDF</Button>
+              <Button
+                variant="outline"
+                disabled={downloadingKey === "asistencia_trend_PDF"}
+                onClick={() => handleDownload("asistencia_trend", "PDF")}
+              >
+                {downloadingKey === "asistencia_trend_PDF" ? (
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                ) : (
+                  <Download className="w-4 h-4 mr-2" />
+                )}
+                PDF
+              </Button>
             </div>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -101,8 +147,8 @@ export function Reports() {
             <div className="h-56">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={pie} dataKey="value" innerRadius={45} outerRadius={75} paddingAngle={2}>
-                    {pie.map((e, i) => <Cell key={i} fill={e.c} />)}
+                  <Pie data={pieData} dataKey="value" innerRadius={45} outerRadius={75} paddingAngle={2}>
+                    {pieData.map((e, i) => <Cell key={i} fill={e.c} />)}
                   </Pie>
                   <Tooltip />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
@@ -146,18 +192,42 @@ export function Reports() {
                 "Listado de alumnos en riesgo",
                 "Promedios por docente",
                 "Reporte financiero familias",
-              ].map((r) => (
-                <li key={r} className="flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:bg-slate-50">
-                  <div className="flex items-center gap-3">
-                    <FileText className="w-4 h-4 text-blue-600" />
-                    <span className="text-sm">{r}</span>
-                  </div>
-                  <div className="flex gap-1">
-                    <Button variant="ghost" size="sm">PDF</Button>
-                    <Button variant="ghost" size="sm">Excel</Button>
-                  </div>
-                </li>
-              ))}
+              ].map((r) => {
+                const pdfKey = `${r}_PDF`;
+                const xlsKey = `${r}_Excel`;
+                const isPdfLoading = downloadingKey === pdfKey;
+                const isXlsLoading = downloadingKey === xlsKey;
+                const isDisabled = downloadingKey !== null;
+
+                return (
+                  <li key={r} className="flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:bg-slate-50 transition">
+                    <div className="flex items-center gap-3">
+                      <FileText className="w-4 h-4 text-blue-600" />
+                      <span className="text-sm text-slate-800 font-medium">{r}</span>
+                    </div>
+                    <div className="flex gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        disabled={isDisabled}
+                        onClick={() => handleDownload(r, "PDF")}
+                        className="text-slate-600 hover:text-blue-600 hover:bg-blue-50"
+                      >
+                        {isPdfLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "PDF"}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        disabled={isDisabled}
+                        onClick={() => handleDownload(r, "Excel")}
+                        className="text-slate-600 hover:text-emerald-600 hover:bg-emerald-50"
+                      >
+                        {isXlsLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Excel"}
+                      </Button>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </CardContent>
         </Card>

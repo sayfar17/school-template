@@ -30,6 +30,8 @@ import {
   Legend,
 } from "recharts";
 
+import { useMockStore } from "./mockStore";
+
 interface Props {
   onNavigate: (k: any) => void;
 }
@@ -51,37 +53,47 @@ const performanceData = [
   { c: "Arte", v: 18.4 },
 ];
 
-const enrollment = [
-  { name: "Secundaria", value: 490, color: "#0ea5e9" },
-];
-
-const activity = [
-  { who: "Carlos Mendoza", action: "registró 32 asistencias en 4°A", time: "Hace 5 min", img: "" },
-  { who: "Laura Vega", action: "publicó 'Feria de Ciencias 2026'", time: "Hace 1 h", img: "" },
-  { who: "Pedro Soto", action: "actualizó notas del Bimestre II", time: "Hace 2 h", img: "" },
-  { who: "Ana Pérez", action: "matriculó a 3 nuevos alumnos", time: "Hace 4 h", img: "" },
-];
-
 export function Dashboard({ onNavigate }: Props) {
+  const { students, teachers, events: storeEvents, posts, activities } = useMockStore();
+
+  const averageGrade = students.length
+    ? (students.reduce((acc, s) => acc + s.avg, 0) / students.length).toFixed(1)
+    : "0.0";
+
   const stats = [
-    { label: "Total alumnos", value: "1,250", delta: "+4.2%", up: true, icon: GraduationCap, color: "bg-blue-100 text-blue-600" },
-    { label: "Total docentes", value: "85", delta: "+2", up: true, icon: Users, color: "bg-indigo-100 text-indigo-600" },
+    { label: "Total alumnos", value: students.length.toString(), delta: "+4.2%", up: true, icon: GraduationCap, color: "bg-blue-100 text-blue-600" },
+    { label: "Total docentes", value: teachers.length.toString(), delta: "+2", up: true, icon: Users, color: "bg-indigo-100 text-indigo-600" },
     { label: "Asistencia hoy", value: "94.6%", delta: "-1.1%", up: false, icon: CalendarCheck, color: "bg-emerald-100 text-emerald-600" },
-    { label: "Promedio general", value: "16.4", delta: "+0.3", up: true, icon: TrendingUp, color: "bg-amber-100 text-amber-600" },
+    { label: "Promedio general", value: averageGrade, delta: "+0.3", up: true, icon: TrendingUp, color: "bg-amber-100 text-amber-600" },
   ];
 
-  const events = [
-    { d: "28", m: "May", t: "Reunión con padres 5°", c: "bg-blue-100 text-blue-700" },
-    { d: "02", m: "Jun", t: "Examen bimestral", c: "bg-amber-100 text-amber-700" },
-    { d: "06", m: "Jun", t: "Feria de Ciencias", c: "bg-emerald-100 text-emerald-700" },
-    { d: "12", m: "Jun", t: "Aniversario del colegio", c: "bg-indigo-100 text-indigo-700" },
-  ];
+  const mapCategoryBadge: Record<string, string> = {
+    exam: "bg-red-100 text-red-700",
+    meet: "bg-blue-100 text-blue-700",
+    act: "bg-emerald-100 text-emerald-700",
+    hol: "bg-amber-100 text-amber-700",
+    evt: "bg-indigo-100 text-indigo-700",
+  };
+
+  const displayedEvents = storeEvents.slice(0, 4).map(e => ({
+    d: e.day.toString().padStart(2, "0"),
+    m: e.month.split(" ")[0].slice(0, 3),
+    t: e.t,
+    c: mapCategoryBadge[e.c] || "bg-slate-100 text-slate-700"
+  }));
 
   const alerts = [
-    { t: "12 alumnos con 3+ faltas este mes", wrap: "bg-amber-50 border-amber-100", icon: "text-amber-600", i: AlertCircle },
+    { t: `${students.filter(s => s.status === "Riesgo").length} alumnos en riesgo académico`, wrap: "bg-amber-50 border-amber-100", icon: "text-amber-600", i: AlertCircle },
     { t: "Boletines del bimestre I listos", wrap: "bg-emerald-50 border-emerald-100", icon: "text-emerald-600", i: CheckCircle2 },
     { t: "Pagos pendientes: 24 familias", wrap: "bg-red-50 border-red-100", icon: "text-red-600", i: Clock },
   ];
+
+  const enrollment = [
+    { name: "Secundaria", value: students.length, color: "#0ea5e9" },
+  ];
+
+  const events = displayedEvents;
+  const activity = activities;
 
   return (
     <div className="space-y-6">
@@ -264,15 +276,11 @@ export function Dashboard({ onNavigate }: Props) {
             </Button>
           </div>
           <div className="grid md:grid-cols-3 gap-4">
-            {[
-              { t: "Olimpiada Nacional 2026", d: "15 May", c: "Académico" },
-              { t: "Feria de Ciencias", d: "08 May", c: "Eventos" },
-              { t: "Admisión 2027 abierta", d: "02 May", c: "Comunicado" },
-            ].map((p) => (
-              <div key={p.t} className="rounded-lg border border-slate-200 p-4">
-                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 mb-2">{p.c}</Badge>
-                <div className="text-sm">{p.t}</div>
-                <div className="text-xs text-slate-500 mt-1">{p.d} · 2026</div>
+            {posts.slice(0, 3).map((p) => (
+              <div key={p.title} className="rounded-lg border border-slate-200 p-4">
+                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 mb-2">{p.cat}</Badge>
+                <div className="text-sm">{p.title}</div>
+                <div className="text-xs text-slate-500 mt-1">{p.date} · 2026</div>
               </div>
             ))}
           </div>

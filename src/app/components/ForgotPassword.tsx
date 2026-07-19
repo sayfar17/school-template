@@ -10,6 +10,16 @@ interface ForgotPasswordProps {
 export function ForgotPassword({ onBack }: ForgotPasswordProps) {
   const [sent, setSent] = useState(false);
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSent(true);
+    }, 800);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-white p-6">
@@ -33,10 +43,7 @@ export function ForgotPassword({ onBack }: ForgotPasswordProps) {
                 Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
               </p>
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSent(true);
-                }}
+                onSubmit={handleSubmit}
                 className="space-y-4"
               >
                 <div>
@@ -53,8 +60,8 @@ export function ForgotPassword({ onBack }: ForgotPasswordProps) {
                     />
                   </div>
                 </div>
-                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                  Enviar enlace
+                <Button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                  {loading ? "Enviando enlace..." : "Enviar enlace"}
                 </Button>
               </form>
             </>

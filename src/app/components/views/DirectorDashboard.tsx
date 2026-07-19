@@ -7,6 +7,8 @@ import {
   BarChart, Bar, LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Legend,
 } from "recharts";
 
+import { useMockStore } from "./mockStore";
+
 const compareData = [
   { g: "1°", actual: 16.2, anterior: 15.6 },
   { g: "2°", actual: 16.8, anterior: 16.1 },
@@ -32,24 +34,34 @@ const ranking = [
 ];
 
 export function DirectorDashboard({ onNavigate }: { onNavigate: (k: any) => void }) {
+  const { students, teachers } = useMockStore();
+
+  const averageGrade = students.length
+    ? (students.reduce((acc, s) => acc + s.avg, 0) / students.length).toFixed(1)
+    : "0.0";
+
+  const riskCount = students.filter(s => s.status === "Riesgo").length;
+
+  const stats = [
+    { label: "Promedio institucional", v: averageGrade, d: "+0.4 vs 2025", i: TrendingUp, c: "bg-blue-100 text-blue-600" },
+    { label: "Asistencia general", v: "94.6%", d: "−1.1% vs Abr", i: CalendarCheck, c: "bg-emerald-100 text-emerald-600" },
+    { label: "Docentes activos", v: `${teachers.length} / ${teachers.length + 3}`, d: "3 con licencia", i: BookOpen, c: "bg-indigo-100 text-indigo-600" },
+    { label: "Alumnos en riesgo", v: riskCount.toString(), d: "Requieren tutoría", i: AlertTriangle, c: "bg-red-100 text-red-600" },
+  ];
+
   return (
     <div className="space-y-6">
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { l: "Promedio institucional", v: "16.4", d: "+0.4 vs 2025", i: TrendingUp, c: "bg-blue-100 text-blue-600" },
-          { l: "Asistencia general", v: "94.6%", d: "−1.1% vs Abr", i: CalendarCheck, c: "bg-emerald-100 text-emerald-600" },
-          { l: "Docentes activos", v: "85 / 88", d: "3 con licencia", i: BookOpen, c: "bg-indigo-100 text-indigo-600" },
-          { l: "Alumnos en riesgo", v: "42", d: "Requieren tutoría", i: AlertTriangle, c: "bg-red-100 text-red-600" },
-        ].map((s) => {
+        {stats.map((s) => {
           const I = s.i;
           return (
-            <Card key={s.l} className="border-slate-200">
+            <Card key={s.label} className="border-slate-200">
               <CardContent className="p-5">
                 <div className={`w-10 h-10 rounded-lg ${s.c} flex items-center justify-center mb-3`}>
                   <I className="w-5 h-5" />
                 </div>
                 <div className="text-3xl">{s.v}</div>
-                <div className="text-sm text-slate-500 mt-1">{s.l}</div>
+                <div className="text-sm text-slate-500 mt-1">{s.label}</div>
                 <div className="text-xs text-slate-400 mt-1">{s.d}</div>
               </CardContent>
             </Card>

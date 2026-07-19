@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Download, Save, Trophy } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
@@ -7,16 +8,8 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Label } from "../ui/label";
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
-
-const rows = [
-  { n: "Sofía Quispe", c1: 18, c2: 17, c3: 18, c4: 17, fin: 17.5, est: "AD" },
-  { n: "Diego Ramírez", c1: 15, c2: 16, c3: 15, c4: 16, fin: 15.5, est: "A" },
-  { n: "Valentina Cruz", c1: 19, c2: 18, c3: 19, c4: 19, fin: 18.8, est: "AD" },
-  { n: "Mateo Torres", c1: 12, c2: 13, c3: 14, c4: 13, fin: 13.0, est: "B" },
-  { n: "Camila Flores", c1: 17, c2: 18, c3: 17, c4: 18, fin: 17.5, est: "AD" },
-  { n: "Lucas Herrera", c1: 16, c2: 15, c3: 17, c4: 16, fin: 16.0, est: "A" },
-  { n: "Isabella Vargas", c1: 14, c2: 15, c3: 14, c4: 15, fin: 14.5, est: "A" },
-];
+import { toast } from "sonner";
+import { useMockStore, GradeRow } from "./mockStore";
 
 const estColor: Record<string, string> = {
   AD: "bg-emerald-100 text-emerald-700",
@@ -33,17 +26,126 @@ const trend = [
 ];
 
 export function GradesNotes() {
-  const sorted = [...rows].sort((a, b) => b.fin - a.fin);
+  const { grades, setGrades, logActivity } = useMockStore();
+
+  // Filters state
+  const [course, setCourse] = useState("mat");
+  const [gradeSection, setGradeSection] = useState("5a");
+  const [period, setPeriod] = useState("b2");
+  const [viewType, setViewType] = useState("tab");
+
+  // Loading states
+  const [saving, setSaving] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  // Local state for the editable grid
+  const [rowsState, setRowsState] = useState<GradeRow[]>([]);
+
+  // Sync with store when course changes
+  useEffect(() => {
+    setRowsState(grades[course] || []);
+  }, [course, grades]);
+
+  const handleGradeChange = (studentName: string, competency: "c1" | "c2" | "c3" | "c4", valueStr: string) => {
+    let val = parseFloat(valueStr);
+    if (isNaN(val)) val = 0;
+    if (val < 0) val = 0;
+    if (val > 20) val = 20;
+
+    setRowsState((prev) =>
+      prev.map((row) => {
+        if (row.n === studentName) {
+          const updatedRow = { ...row, [competency]: val };
+          // Recalculate average
+          const avg = (updatedRow.c1 + updatedRow.c2 + updatedRow.c3 + updatedRow.c4) / 4;
+          updatedRow.fin = parseFloat(avg.toFixed(1));
+          // Recalculate achievement level
+          if (avg >= 17.0) updatedRow.est = "AD";
+          else if (avg >= 14.0) updatedRow.est = "A";
+          else if (avg >= 11.0) updatedRow.est = "B";
+          else updatedRow.est = "C";
+
+          return updatedRow;
+        }
+        return row;
+      })
+    );
+  };
+
+  const handleSave = () => {
+    setSaving(true);
+    setTimeout(() => {
+      setGrades((prev) => ({
+        ...prev,
+        [course]: rowsState,
+      }));
+      const courseLabel = course === "mat" ? "Matemática" : "Comunicación";
+      logActivity("Carlos Mendoza", `actualizó las notas de ${courseLabel} Bimestre II`);
+      toast.success("Calificaciones guardadas y consolidadas correctamente");
+      setSaving(false);
+    }, 1000);
+  };
+
+  const handleExport = () => {
+    setExporting(true);
+    toast.promise(
+      new Promise((resolve) => setTimeout(resolve, 1000)),
+      {
+        loading: "Generando libreta de notas...",
+        success: `Boletines_${course}_B2.pdf descargados`,
+        error: "Error al exportar",
+      }
+    ).finally(() => setExporting(false));
+  };
+
+  const sorted = [...rowsState].sort((a, b) => b.fin - a.fin);
+  const courseNameLabel = course === "mat" ? "Matemática" : "Comunicación";
 
   return (
     <div className="space-y-6">
       <Card className="border-slate-200">
         <CardContent className="p-5">
           <div className="grid sm:grid-cols-4 gap-4">
-            <div><Label>Curso</Label><Select defaultValue="mat"><SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="mat">Matemática</SelectItem><SelectItem value="com">Comunicación</SelectItem></SelectContent></Select></div>
-            <div><Label>Grado/Sección</Label><Select defaultValue="5a"><SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="5a">5° A · Secundaria</SelectItem></SelectContent></Select></div>
-            <div><Label>Periodo</Label><Select defaultValue="b2"><SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="b1">Bimestre I</SelectItem><SelectItem value="b2">Bimestre II</SelectItem><SelectItem value="b3">Bimestre III</SelectItem></SelectContent></Select></div>
-            <div><Label>Vista</Label><Select defaultValue="tab"><SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="tab">Tabla editable</SelectItem><SelectItem value="alu">Por alumno</SelectItem></SelectContent></Select></div>
+            <div>
+              <Label>Curso</Label>
+              <Select value={course} onValueChange={setCourse} disabled={saving}>
+                <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mat">Matemática</SelectItem>
+                  <SelectItem value="com">Comunicación</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Grado/Sección</Label>
+              <Select value={gradeSection} onValueChange={setGradeSection} disabled={saving}>
+                <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="5a">5° A · Secundaria</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Periodo</Label>
+              <Select value={period} onValueChange={setPeriod} disabled={saving}>
+                <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="b1">Bimestre I</SelectItem>
+                  <SelectItem value="b2">Bimestre II</SelectItem>
+                  <SelectItem value="b3">Bimestre III</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Vista</Label>
+              <Select value={viewType} onValueChange={setViewType} disabled={saving}>
+                <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="tab">Tabla editable</SelectItem>
+                  <SelectItem value="alu">Por alumno</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -53,12 +155,16 @@ export function GradesNotes() {
           <CardContent className="p-5">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3>Calificaciones · Matemática 5°A</h3>
+                <h3>Calificaciones · {courseNameLabel} 5°A</h3>
                 <p className="text-sm text-slate-500">Bimestre II · 4 competencias</p>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline"><Download className="w-4 h-4 mr-2" />Boletines</Button>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white"><Save className="w-4 h-4 mr-2" />Guardar</Button>
+                <Button variant="outline" onClick={handleExport} disabled={exporting || saving}>
+                  <Download className="w-4 h-4 mr-2" />Boletines
+                </Button>
+                <Button onClick={handleSave} disabled={saving || exporting} className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Save className="w-4 h-4 mr-2" />{saving ? "Guardando..." : "Guardar"}
+                </Button>
               </div>
             </div>
 
@@ -67,32 +173,54 @@ export function GradesNotes() {
                 <thead className="bg-slate-50">
                   <tr className="text-left">
                     <th className="p-3">Alumno</th>
-                    <th className="p-2">C1</th>
-                    <th className="p-2">C2</th>
-                    <th className="p-2">C3</th>
-                    <th className="p-2">C4</th>
-                    <th className="p-2">Final</th>
-                    <th className="p-2">Nivel</th>
+                    <th className="p-2 text-center">C1</th>
+                    <th className="p-2 text-center">C2</th>
+                    <th className="p-2 text-center">C3</th>
+                    <th className="p-2 text-center">C4</th>
+                    <th className="p-2 text-center">Final</th>
+                    <th className="p-2 text-center">Nivel</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {rows.map((r) => (
-                    <tr key={r.n} className="border-t border-slate-100 hover:bg-slate-50">
-                      <td className="p-3">
-                        <div className="flex items-center gap-2">
-                          <Avatar className="w-7 h-7"><AvatarFallback className="text-[10px] bg-blue-100 text-blue-700">{r.n.split(" ").map((p) => p[0]).join("")}</AvatarFallback></Avatar>
-                          {r.n}
-                        </div>
-                      </td>
-                      {["c1", "c2", "c3", "c4"].map((k) => (
-                        <td key={k} className="p-2">
-                          <Input defaultValue={(r as any)[k]} className="w-14 h-8 text-center" />
-                        </td>
-                      ))}
-                      <td className="p-2"><span className="px-2 py-1 rounded-md bg-slate-100">{r.fin}</span></td>
-                      <td className="p-2"><Badge className={`${estColor[r.est]} hover:bg-current`}>{r.est}</Badge></td>
+                  {rowsState.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="text-center py-6 text-slate-400">No hay calificaciones disponibles</td>
                     </tr>
-                  ))}
+                  ) : (
+                    rowsState.map((r) => (
+                      <tr key={r.n} className="border-t border-slate-100 hover:bg-slate-50">
+                        <td className="p-3">
+                          <div className="flex items-center gap-2">
+                            <Avatar className="w-7 h-7">
+                              <AvatarFallback className="text-[10px] bg-blue-100 text-blue-700">
+                                {r.n.split(" ").map((p) => p[0]).join("")}
+                              </AvatarFallback>
+                            </Avatar>
+                            {r.n}
+                          </div>
+                        </td>
+                        {["c1", "c2", "c3", "c4"].map((k) => (
+                          <td key={k} className="p-2 text-center">
+                            <Input
+                              type="number"
+                              min="0"
+                              max="20"
+                              value={(r as any)[k]}
+                              onChange={(e) => handleGradeChange(r.n, k as any, e.target.value)}
+                              className="w-14 h-8 text-center mx-auto"
+                              disabled={saving}
+                            />
+                          </td>
+                        ))}
+                        <td className="p-2 text-center">
+                          <span className="px-2 py-1 rounded-md bg-slate-100 font-semibold">{r.fin}</span>
+                        </td>
+                        <td className="p-2 text-center">
+                          <Badge className={`${estColor[r.est]} hover:bg-current`}>{r.est}</Badge>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -110,7 +238,7 @@ export function GradesNotes() {
                 {sorted.slice(0, 5).map((s, i) => (
                   <li key={s.n} className="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50">
                     <div className="flex items-center gap-3">
-                      <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs ${
+                      <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold ${
                         i === 0 ? "bg-amber-100 text-amber-700" : i === 1 ? "bg-slate-100 text-slate-700" : i === 2 ? "bg-orange-100 text-orange-700" : "bg-slate-50 text-slate-500"
                       }`}>{i + 1}</span>
                       <span className="text-sm">{s.n}</span>
